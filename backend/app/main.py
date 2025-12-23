@@ -5,8 +5,17 @@ from app.models.branch import Branch
 from app.api.health import router as health_router
 from app.api.franchises import router as franchise_router
 from app.api.branches import router as branch_router
+from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI(title="RTECA Case Study API")
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:3000"],  # frontend
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 Base.metadata.create_all(bind=engine)
 

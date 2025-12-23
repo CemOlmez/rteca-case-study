@@ -49,3 +49,21 @@ def update_franchise(
     db.commit()
     db.refresh(franchise)
     return franchise
+
+
+@router.delete("/franchises/{franchise_id}")
+def delete_franchise(
+    franchise_id: int,
+    db: Session = Depends(get_db),
+):
+    franchise = db.query(Franchise).filter(
+        Franchise.id == franchise_id
+    ).first()
+
+    if not franchise:
+        raise HTTPException(status_code=404, detail="Franchise not found")
+
+    db.delete(franchise)
+    db.commit()
+
+    return {"message": "Franchise deleted"}
