@@ -1,103 +1,97 @@
-RTECA Case Study
+# RTECA Case Study
 
-A full-stack case study built for RTECA, showcasing a modern management system for Franchises and their related Offices (Branches).
-The project demonstrates clean frontend architecture, a RESTful backend, and a fully Dockerized setup for fast local onboarding.
+A full-stack case study built for **RTECA**, showcasing a management system for **Franchises** and their related **Offices (Branches)**.  
+The project demonstrates clean frontend architecture, a RESTful backend, and a fully Dockerized setup for fast and reliable local onboarding.
 
-Features
-Franchises
+---
 
-Create, view, update, and delete franchises
+## Features
 
-View franchise details in a reusable details modal
+### Franchises
+- Create, view, update, and delete franchises
+- View franchise details in a reusable details modal
+- Read-only → edit mode toggle using shared forms
 
-Read-only → edit mode toggle using shared forms
+### Offices (Branches)
+- Create offices under a franchise
+- View offices per franchise
+- Update and delete offices
+- Shared form logic for create / view / edit workflows
 
-Offices (Branches)
+> ⚠️ Note: Some minor UI edge cases on the Offices page are known and will be finalized in the next iteration.
 
-Create offices under a franchise
+---
 
-View and manage offices per franchise
-
-Update and delete offices
-
-Shared form logic for create / view / edit flows
-
-⚠️ Note: A few minor UI edge cases in the Offices page are known and will be finalized in the next iteration.
-
-Project Structure
+## Project Structure
 rteca-case-study/
 ├── backend/
-│   ├── app/
-│   │   ├── api/
-│   │   │   └── routes/
-│   │   │       ├── franchises.py
-│   │   │       ├── branches.py
-│   │   │       └── health.py
-│   │   ├── models/
-│   │   ├── schemas/
-│   │   ├── database.py
-│   │   └── main.py
-│   └── Dockerfile
+│ ├── app/
+│ │ ├── api/
+│ │ │ └── routes/
+│ │ │ ├── franchises.py
+│ │ │ ├── branches.py
+│ │ │ └── health.py
+│ │ ├── models/
+│ │ ├── schemas/
+│ │ ├── database.py
+│ │ └── main.py
+│ └── Dockerfile
 │
 ├── frontend/
-│   ├── src/
-│   │   ├── app/
-│   │   ├── components/
-│   │   │   ├── ui/
-│   │   │   ├── forms/
-│   │   │   └── details/
-│   │   ├── api/
-│   │   └── styles/
-│   └── Dockerfile
+│ ├── src/
+│ │ ├── app/
+│ │ ├── components/
+│ │ │ ├── ui/
+│ │ │ ├── forms/
+│ │ │ └── details/
+│ │ ├── api/
+│ │ └── styles/
+│ └── Dockerfile
 │
 ├── docker-compose.yml
 └── README.md
 
-Tech Stack
-Frontend
+---
 
-Next.js (App Router)
+## Tech Stack
 
-React
+### Frontend
+- Next.js (App Router)
+- React
+- TypeScript
+- React Hook Form
+- Tailwind CSS
 
-TypeScript
+### Backend
+- FastAPI
+- SQLAlchemy
+- PostgreSQL
+- Pydantic
 
-React Hook Form
+### DevOps
+- Docker
+- Docker Compose
 
-Tailwind CSS
+---
 
-Backend
+## Getting Started
 
-FastAPI
-
-SQLAlchemy
-
-PostgreSQL
-
-Pydantic
-
-DevOps
-
-Docker
-
-Docker Compose
-
-Getting Started
-Prerequisites
-
-Docker
-
-Docker Compose (v2)
+### Prerequisites
+- Docker
+- Docker Compose (v2)
 
 No local installation of PostgreSQL, Node.js, or Python is required when using Docker.
 
-Run with Docker Compose
+---
+
+### Run with Docker Compose
 
 From the project root:
 
+```bash
 docker compose up --build
 
-Access the Application
+ccess the Application
 Service	URL
 Frontend	http://localhost:3000
 
@@ -132,9 +126,9 @@ Final fixes for Office page edge cases
 
 UI/UX polish (spacing, consistency, labels)
 
-Optional pagination & search enhancements
+Optional pagination and search enhancements
 
-Code cleanup & minor refactoring
+Minor code cleanup and refactoring
 
 Assumptions & Tradeoffs
 
