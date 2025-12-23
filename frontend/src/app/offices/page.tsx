@@ -108,10 +108,10 @@ const filteredOffices = selectedFranchise
         <div className="flex justify-between items-center">
           <h2 className="text-2xl font-semibold">Office List</h2>
            <Select
-    value={selectedFranchise}
-    onChange={setSelectedFranchise}
-    options={franchiseOptions}
-  />
+  value={selectedFranchise}
+  onChange={(e) => setSelectedFranchise(e.target.value)}
+  options={franchiseOptions}
+/>
           <SearchBar placeholder="Search Offfice..." />
           
         </div>

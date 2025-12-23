@@ -5,6 +5,7 @@ import { useState } from "react";
 import Modal from "@/components/ui/Modal";
 import Button from "@/components/ui/Button";
 
+import type { Office, Franchise } from "@/api/api";
 import { DetailsModalProps } from "./types";
 import OfficeDetails from "./OfficeDetails";
 import FranchiseDetails from "./FranchiseDetails";
@@ -32,10 +33,9 @@ export default function DetailsModal<T extends "office" | "franchise">({
       title={type === "office" ? "Office Details" : "Franchise Details"}
     >
       <div className="space-y-6">
-        {/* Entity-specific content */}
         {type === "office" && (
           <OfficeDetails
-            office={data as any}
+            office={data as Office}
             isEditing={isEditing}
             onCancelEdit={() => setIsEditing(false)}
             onSaved={async () => {
@@ -47,7 +47,7 @@ export default function DetailsModal<T extends "office" | "franchise">({
 
         {type === "franchise" && (
           <FranchiseDetails
-            franchise={data as any}
+            franchise={data as Franchise}
             isEditing={isEditing}
             onCancelEdit={() => setIsEditing(false)}
             onSaved={async () => {
@@ -57,7 +57,6 @@ export default function DetailsModal<T extends "office" | "franchise">({
           />
         )}
 
-        {/* Footer actions (view mode only) */}
         {!isEditing && (
           <div className="flex justify-end gap-2 pt-4 border-t">
             <Button variant="secondary" onClick={handleClose}>

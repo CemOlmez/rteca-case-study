@@ -33,7 +33,7 @@ export default function OfficeDetails({
           phone: office.phone,
           email: office.email,
           city: office.city,
-          consultants_count: office.consultant_count,
+          consultants_count: office.consultants_count,
           isActive: office.is_active,
         }}
         readOnly={!isEditing}

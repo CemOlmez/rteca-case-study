@@ -29,6 +29,7 @@ export type Office = {
   id: number;
   franchise_id: number;
   name: string;
+  city: string;
   phone: string;
   email: string;
   consultants_count: number;

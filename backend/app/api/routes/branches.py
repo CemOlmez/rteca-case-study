@@ -1,5 +1,6 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
+
 from app.api.deps import get_db
 from app.models.branch import Branch
 from app.schemas.branch import BranchCreate, BranchResponse
@@ -9,7 +10,7 @@ router = APIRouter()
 @router.post("/branches", response_model=BranchResponse)
 def create_branch(
     data: BranchCreate,
-    db: Session = Depends(get_db)
+    db: Session = Depends(get_db),
 ):
     branch = Branch(**data.dict())
     db.add(branch)
@@ -18,7 +19,6 @@ def create_branch(
     return branch
 
 
-# ✅ NEW: Get ALL branches
 @router.get("/branches", response_model=list[BranchResponse])
 def get_all_branches(db: Session = Depends(get_db)):
     return db.query(Branch).all()
@@ -26,16 +26,17 @@ def get_all_branches(db: Session = Depends(get_db)):
 
 @router.get(
     "/franchises/{franchise_id}/branches",
-    response_model=list[BranchResponse]
+    response_model=list[BranchResponse],
 )
 def get_branches_by_franchise(
     franchise_id: int,
-    db: Session = Depends(get_db)
+    db: Session = Depends(get_db),
 ):
-    return db.query(Branch).filter(
-        Branch.franchise_id == franchise_id
-    ).all()
-
+    return (
+        db.query(Branch)
+        .filter(Branch.franchise_id == franchise_id)
+        .all()
+    )
 
 
 @router.put("/branches/{branch_id}", response_model=BranchResponse)

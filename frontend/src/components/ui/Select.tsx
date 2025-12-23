@@ -1,31 +1,25 @@
-type SelectOption = {
-  label: string;
-  value: string | number;
-};
+import type { SelectHTMLAttributes } from "react";
 
-type SelectProps = {
+type SelectProps = SelectHTMLAttributes<HTMLSelectElement> & {
   label?: string;
-  value: string | number | "";
   options: { label: string; value: string | number }[];
   placeholder?: string;
-  onChange: (value: string) => void;
 };
 
 export default function Select({
   label,
-  value,
   options,
   placeholder = "Choose",
-  onChange,
+  className = "",
+  ...props
 }: SelectProps) {
   return (
     <div className="space-y-1">
       {label && <label className="text-sm font-medium">{label}</label>}
 
       <select
-        value={value}
-        onChange={(e) => onChange(e.target.value)}
-        className="border rounded px-3 py-2 w-full text-sm"
+        {...props}
+        className={`border rounded px-3 py-2 w-full text-sm ${className}`}
       >
         <option value="">{placeholder}</option>
 

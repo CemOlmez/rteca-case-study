@@ -8,7 +8,7 @@ class Franchise(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     name = Column(String, nullable=False)
-    tax_number = Column(String, nullable=False, unique=True)
+    tax_number = Column(String, nullable=False, unique=True, index=True)
 
     phone = Column(String, nullable=True)
     email = Column(String, nullable=True)

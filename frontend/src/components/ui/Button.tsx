@@ -1,13 +1,14 @@
-type ButtonProps = {
-  children: React.ReactNode;
-  onClick?: () => void;
+import type { ButtonHTMLAttributes } from "react";
+
+type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
   variant?: "primary" | "secondary";
 };
 
 export default function Button({
   children,
-  onClick,
   variant = "primary",
+  className = "",
+  ...props
 }: ButtonProps) {
   const base =
     "px-4 py-2 rounded-xl text-sm font-medium transition";
@@ -18,7 +19,10 @@ export default function Button({
       : "bg-gray-200 text-gray-700 hover:bg-gray-300";
 
   return (
-    <button onClick={onClick} className={`${base} ${styles}`}>
+    <button
+      {...props}
+      className={`${base} ${styles} ${className}`}
+    >
       {children}
     </button>
   );
