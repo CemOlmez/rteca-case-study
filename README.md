@@ -1,23 +1,31 @@
-# RTECA Case Study
+# Franchise Management Case Study
 
-A full-stack case study built for **RTECA**, showcasing a management system for **Franchises** and their related **Offices (Branches)**. The project demonstrates clean frontend architecture, a RESTful backend, and a fully Dockerized setup for fast and reliable local onboarding.
+A full-stack case study, showcasing a management system for **Franchises** and their related **Offices (Branches)**. The project demonstrates:
+
+This project demonstrates:
+
+- Clean, reusable frontend architecture
+- Type-safe React + TypeScript patterns
+- RESTful backend design with FastAPI
+- Fully Dockerized local setup
+- Real-world CRUD workflows
 
 ---
 
 ## Features
 
 ### Franchises
+
 - Create, view, update, and delete franchises
 - View franchise details in a reusable details modal
 - Read-only → edit mode toggle using shared forms
 
 ### Offices (Branches)
+
 - Create offices under a franchise
 - View offices per franchise
 - Update and delete offices
 - Shared form logic for create / view / edit workflows
-
-> ⚠️ **Note:** Some minor UI edge cases on the Offices page are known and will be finalized in the next iteration.
 
 ---
 
@@ -29,9 +37,9 @@ rteca-case-study/
 │   ├── app/
 │   │   ├── api/
 │   │   │   └── routes/
-│   │   │       ├── franchises.py
-│   │   │       ├── branches.py
-│   │   │       └── health.py
+│   │   │
+│   │   │
+│   │   │
 │   │   ├── models/
 │   │   ├── schemas/
 │   │   ├── database.py
@@ -57,17 +65,17 @@ rteca-case-study/
 
 ## Tech Stack
 
-| Layer      | Tech                          |
-|------------|-------------------------------|
-| Frontend   | Next.js (App Router)          |
-| UI         | React + TypeScript            |
-| Forms      | React Hook Form               |
-| Styling    | Tailwind CSS                  |
-| Backend    | FastAPI                       |
-| ORM        | SQLAlchemy                    |
-| Database   | PostgreSQL                    |
-| Validation | Pydantic                      |
-| Container  | Docker + Docker Compose       |
+| Layer      | Tech                    |
+| ---------- | ----------------------- |
+| Frontend   | Next.js (App Router)    |
+| UI         | React + TypeScript      |
+| Forms      | React Hook Form         |
+| Styling    | Tailwind CSS            |
+| Backend    | FastAPI                 |
+| ORM        | SQLAlchemy              |
+| Database   | PostgreSQL              |
+| Validation | Pydantic                |
+| Container  | Docker + Docker Compose |
 
 ---
 
@@ -85,7 +93,7 @@ No local installation of PostgreSQL, Node.js, or Python is required when using D
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/your-username/rteca-case-study.git
+git clone https://github.com/CemOlmez/rteca-case-study.git
 cd rteca-case-study
 ```
 
@@ -104,10 +112,10 @@ docker compose up --build
 ### 3. Access the Application
 
 | Service  | URL                              |
-|----------|----------------------------------|
+| -------- | -------------------------------- |
 | Frontend | http://localhost:3000            |
 | Backend  | http://localhost:8000            |
-| Health   | http://localhost:8000/health     |
+| Health   | http://localhost:8000/api/health |
 
 ---
 
@@ -116,11 +124,13 @@ docker compose up --build
 All environment variables are managed via Docker Compose.
 
 ### Frontend
+
 ```
 NEXT_PUBLIC_API_URL=http://backend:8000/api
 ```
 
 ### Backend
+
 ```
 DATABASE_URL=postgresql://rteca:rteca@db:5432/rteca_db
 ```
@@ -131,30 +141,24 @@ DATABASE_URL=postgresql://rteca:rteca@db:5432/rteca_db
 
 ### Franchises
 
-| Endpoint              | Method | Description                  |
-|-----------------------|--------|------------------------------|
-| `/api/franchises`     | GET    | Get all franchises           |
-| `/api/franchises`     | POST   | Create a new franchise       |
-| `/api/franchises/{id}`| GET    | Get a franchise by ID        |
-| `/api/franchises/{id}`| PUT    | Update a franchise           |
-| `/api/franchises/{id}`| DELETE | Delete a franchise           |
+| Endpoint               | Method | Description            |
+| ---------------------- | ------ | ---------------------- |
+| `/api/franchises`      | GET    | Get all franchises     |
+| `/api/franchises`      | POST   | Create a new franchise |
+| `/api/franchises/{id}` | GET    | Get a franchise by ID  |
+| `/api/franchises/{id}` | PUT    | Update a franchise     |
+| `/api/franchises/{id}` | DELETE | Delete a franchise     |
 
 ### Offices (Branches)
 
-| Endpoint                              | Method | Description                      |
-|---------------------------------------|--------|----------------------------------|
-| `/api/branches`                       | GET    | Get all branches                 |
-| `/api/branches`                       | POST   | Create a new branch              |
-| `/api/branches/{id}`                  | GET    | Get a branch by ID               |
-| `/api/branches/{id}`                  | PUT    | Update a branch                  |
-| `/api/branches/{id}`                  | DELETE | Delete a branch                  |
-| `/api/franchises/{franchise_id}/branches` | GET | Get all branches for a franchise |
-
-### Health
-
-| Endpoint   | Method | Description           |
-|------------|--------|-----------------------|
-| `/health`  | GET    | Health check endpoint |
+| Endpoint                                  | Method | Description                      |
+| ----------------------------------------- | ------ | -------------------------------- |
+| `/api/branches`                           | GET    | Get all branches                 |
+| `/api/branches`                           | POST   | Create a new branch              |
+| `/api/branches/{id}`                      | GET    | Get a branch by ID               |
+| `/api/branches/{id}`                      | PUT    | Update a branch                  |
+| `/api/branches/{id}`                      | DELETE | Delete a branch                  |
+| `/api/franchises/{franchise_id}/branches` | GET    | Get all branches for a franchise |
 
 ---
 
@@ -168,25 +172,16 @@ DATABASE_URL=postgresql://rteca:rteca@db:5432/rteca_db
 
 ---
 
-## Known Improvements & Next Steps
-
-- Final fixes for Office page edge cases
-- UI/UX polish (spacing, consistency, labels)
-- Optional pagination and search enhancements
-- Minor code cleanup and refactoring
-
----
-
 ## Testing
 
-Testing wasn't added in this version due to time limitations and focus on core functionality. I plan to implement proper unit and integration tests in future iterations using Jest/React Testing Library for the frontend and pytest for the backend.
+Testing wasn't added
 
 ---
 
 ## Assumptions & Tradeoffs
 
 - No authentication layer was added to keep the scope focused on CRUD operations
-- No automated tests were included due to time constraints
+- No tests were included
 - The project prioritizes clarity and correctness over feature depth
 - Docker Compose is used for local orchestration only
 - PostgreSQL data persists locally via Docker volumes but no cloud deployment was configured
@@ -197,18 +192,7 @@ Testing wasn't added in this version due to time limitations and focus on core f
 ## Author
 
 **Cem Ölmez**  
-Frontend-focused Full-Stack Developer
+Frontend-focused Full-Stack Developer  
+React • TypeScript • Next.js • FastAPI
 
----
-
-## Summary
-
-This project demonstrates:
-
-- Clean, reusable frontend architecture
-- Type-safe React + TypeScript patterns
-- RESTful backend design with FastAPI
-- Fully Dockerized local setup
-- Real-world CRUD workflows
-
----
+## 📍 Istanbul, Turkey
