@@ -9,19 +9,20 @@ import Modal from "@/components/ui/Modal";
 import FranchiseForm from "@/components/forms/FranchiseForm";
 import DetailsModal from "@/components/details/DetailsModal";
 
-import { getFranchises } from "@/api/api";
-import type { Franchise } from "@/api/api";
+import { getFranchises } from "@/api";
+import type { Franchise } from "@/types";
 
 export default function FranchisesPage() {
   const [isCreateOpen, setIsCreateOpen] = useState(false);
   const [detailsOpen, setDetailsOpen] = useState(false);
-  const [selectedFranchise, setSelectedFranchise] =
-    useState<Franchise | null>(null);
+  const [selectedFranchise, setSelectedFranchise] = useState<Franchise | null>(
+    null
+  );
 
   const [franchises, setFranchises] = useState<Franchise[]>([]);
   const [loading, setLoading] = useState(true);
 
-  const fetchData = async () => {
+  const loadFranchises = async () => {
     try {
       const data = await getFranchises();
       setFranchises(data);
@@ -33,7 +34,7 @@ export default function FranchisesPage() {
   };
 
   useEffect(() => {
-    fetchData();
+    loadFranchises();
   }, []);
 
   return (
@@ -41,9 +42,7 @@ export default function FranchisesPage() {
       {/* Header */}
       <div className="flex justify-between items-center">
         <div>
-          <h1 className="text-3xl font-semibold">
-            Franchise Information
-          </h1>
+          <h1 className="text-3xl font-semibold">Franchise Information</h1>
           <p className="text-sm text-gray-500">
             Manage franchise information registered in the system.
           </p>
@@ -61,7 +60,7 @@ export default function FranchisesPage() {
         >
           <FranchiseForm
             onSubmitSuccess={async () => {
-              await fetchData();
+              await loadFranchises();
               setIsCreateOpen(false);
             }}
           />
@@ -69,25 +68,21 @@ export default function FranchisesPage() {
       </div>
 
       {loading && (
-        <div className="text-sm text-gray-500">
-          Loading franchises...
-        </div>
+        <div className="text-sm text-gray-500">Loading franchises...</div>
       )}
 
       {!loading && franchises.length === 0 && (
-        <div className="text-sm text-gray-500">
-          No franchises found.
-        </div>
+        <div className="text-sm text-gray-500">No franchises found.</div>
       )}
 
       {/* Table */}
-      <div className="bg-white rounded shadow p-4 space-y-4">
-        <div className="flex justify-between items-center">
-          <h2 className="text-md font-medium">
-            Franchise List
-          </h2>
+      <div className="bg-white rounded-xl shadow p-4 space-y-4">
+        <div className="flex justify-between items-center py-4">
+          <h2 className="text-2xl font-semibold">Franchise List</h2>
           <SearchBar placeholder="Search franchise..." />
         </div>
+
+        <div className="border-t border-gray-300" />
 
         <DataTable
           data={franchises}
@@ -102,11 +97,13 @@ export default function FranchisesPage() {
               render: (row) => (
                 <Button
                   variant="secondary"
+                  className="flex items-center gap-2"
                   onClick={() => {
                     setSelectedFranchise(row);
                     setDetailsOpen(true);
                   }}
                 >
+                  <i className="fa-solid fa-eye text-sm"></i>
                   Details
                 </Button>
               ),
@@ -115,7 +112,7 @@ export default function FranchisesPage() {
         />
       </div>
 
-      {/* Details Modal */}
+      {/*Details Modal */}
       <DetailsModal
         open={detailsOpen}
         onClose={() => {
@@ -125,7 +122,7 @@ export default function FranchisesPage() {
         type="franchise"
         data={selectedFranchise}
         onUpdated={async () => {
-          await fetchData();
+          await loadFranchises();
           setDetailsOpen(false);
         }}
       />

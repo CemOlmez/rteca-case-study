@@ -8,7 +8,7 @@ export default function Sidebar() {
 
   return (
     <aside className="w-64 bg-gray-800 text-white min-h-screen flex flex-col">
-      {/* App title */}
+      {/* title / Lofo */}
       <div className="p-4 text-lg font-semibold flex items-center gap-2">
         <i className="fa-solid fa-building"></i>
         JokerSoft CRM
@@ -16,7 +16,7 @@ export default function Sidebar() {
 
       <hr className="border-slate-700" />
 
-      {/* Menu */}
+      {/* LINKS */}
       <nav className="flex-1 p-2">
         <button
           onClick={() => setOpen(!open)}

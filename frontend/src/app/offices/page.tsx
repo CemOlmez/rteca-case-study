@@ -9,56 +9,50 @@ import DataTable from "@/components/ui/Datatable";
 import Modal from "@/components/ui/Modal";
 import OfficeForm from "@/components/forms/OfficeForm";
 import DetailsModal from "@/components/details/DetailsModal";
-import { getAllOffices, getFranchises } from "@/api/api";
-import type { Office, Franchise } from "@/api/api";
 
-
+import { getAllOffices, getFranchises } from "@/api";
+import type { Office, Franchise } from "@/types";
 
 export default function OfficesPage() {
-
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedFranchise, setSelectedFranchise] = useState("");
 
   const [offices, setOffices] = useState<Office[]>([]);
-const [franchises, setFranchises] = useState<Franchise[]>([]);
+  const [franchises, setFranchises] = useState<Franchise[]>([]);
 
-const [detailsOpen, setDetailsOpen] = useState(false);
-const [selectedOffice, setSelectedOffice] = useState<Office | null>(null);
+  const [detailsOpen, setDetailsOpen] = useState(false);
+  const [selectedOffice, setSelectedOffice] = useState<Office | null>(null);
 
-const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(true);
 
-  async function loadData() {
-  try {
-    const [officesData, franchisesData] = await Promise.all([
-      getAllOffices(),
-      getFranchises(),
-    ]);
+  const loadData = async () => {
+    try {
+      const [officesData, franchisesData] = await Promise.all([
+        getAllOffices(),
+        getFranchises(),
+      ]);
 
-    setOffices(officesData);
-    setFranchises(franchisesData);
-  } catch (err) {
-    console.error("Failed to load offices", err);
-  } finally {
-    setLoading(false);
-  }
-}
+      setOffices(officesData);
+      setFranchises(franchisesData);
+    } catch (err) {
+      console.error("Failed to load offices", err);
+    } finally {
+      setLoading(false);
+    }
+  };
 
-useEffect(() => {
-  loadData();
-}, []);
+  useEffect(() => {
+    loadData();
+  }, []);
 
+  const franchiseOptions = franchises.map((f) => ({
+    label: f.name,
+    value: f.id.toString(),
+  }));
 
-const franchiseOptions = franchises.map((f) => ({
-  label: f.name,
-  value: f.id.toString(),
-}));
-
-const filteredOffices = selectedFranchise
-  ? offices.filter(
-      (o) => o.franchise_id === Number(selectedFranchise)
-    )
-  : offices;
-
+  const filteredOffices = selectedFranchise
+    ? offices.filter((o) => o.franchise_id === Number(selectedFranchise))
+    : offices;
 
   return (
     <div className="space-y-4">
@@ -71,54 +65,42 @@ const filteredOffices = selectedFranchise
           </p>
         </div>
 
-        <Button onClick={() => setIsModalOpen(true)}>
-  + Add New Office
-</Button>
+        <Button onClick={() => setIsModalOpen(true)}>+ Add New Office</Button>
 
-<Modal
-  isOpen={isModalOpen}
-  onClose={() => setIsModalOpen(false)}
-  title="Add New Office"
->
-  <OfficeForm
-    onSubmitSuccess={async () => {
-      await loadData();  
-      setIsModalOpen(false);
-    }}
-  />
-</Modal>
-
-
+        {/* Office Modal */}
+        <Modal
+          isOpen={isModalOpen}
+          onClose={() => setIsModalOpen(false)}
+          title="Add New Office"
+        >
+          <OfficeForm
+            onSubmitSuccess={async () => {
+              await loadData();
+              setIsModalOpen(false);
+            }}
+          />
+        </Modal>
       </div>
 
-      {loading && (
-  <div className="text-sm text-gray-500">
-    Loading offices...
-  </div>
-)}
-
-{!loading && filteredOffices.length === 0 && (
-  <div className="text-sm text-gray-500">
-    No offices found.
-  </div>
-)}
-
-      {/* Table card */}
-      <div className="bg-white rounded shadow p-4 space-y-4">
-        <div className="flex justify-between items-center">
+      {/* Table */}
+      <div className="bg-white rounded-xl shadow p-4 space-y-4">
+        <div className="flex justify-between items-center py-4">
           <h2 className="text-2xl font-semibold">Office List</h2>
-           <Select
-  value={selectedFranchise}
-  onChange={(e) => setSelectedFranchise(e.target.value)}
-  options={franchiseOptions}
-/>
-          <SearchBar placeholder="Search Offfice..." />
-          
-        </div>
-        <div className="flex gap-4 items-center">
- 
-</div>
 
+          <div className="flex items-center gap-3">
+            <Select
+              value={selectedFranchise}
+              onChange={(e) => setSelectedFranchise(e.target.value)}
+              options={franchiseOptions}
+              placeholder="All franchise offices"
+              className="w-56"
+            />
+
+            <SearchBar placeholder="Search office..." className="w-56" />
+          </div>
+        </div>
+
+        <div className="border-t border-gray-300" />
 
         <DataTable
           data={filteredOffices}
@@ -137,41 +119,48 @@ const filteredOffices = selectedFranchise
             {
               header: "Status",
               render: (row) => (
-                <span className="px-2 py-1 rounded-full bg-green-100 text-green-600 text-xs">
-                  {row.is_active ? "Active" : "Out"}
+                <span
+                  className={`px-2 py-1 rounded-full text-xs font-medium ${
+                    row.is_active
+                      ? "bg-green-100 text-green-600"
+                      : "bg-red-100 text-red-600"
+                  }`}
+                >
+                  {row.is_active ? "Active" : "Inactive"}
                 </span>
               ),
             },
             {
-  header: "Actions",
-  render: (row) => (
-    <Button
-      variant="secondary"
-      onClick={() => {
-        setSelectedOffice(row);
-        setDetailsOpen(true);
-      }}
-    >
-      
-      Details
-    </Button>
-  ),
-}
+              header: "Actions",
+              render: (row) => (
+                <Button
+                  variant="secondary"
+                  className="flex items-center gap-2"
+                  onClick={() => {
+                    setSelectedOffice(row);
+                    setDetailsOpen(true);
+                  }}
+                >
+                  <i className="fa-solid fa-eye text-sm"></i>
+                  Details
+                </Button>
+              ),
+            },
           ]}
         />
-        <DetailsModal
-  open={detailsOpen}
-  onClose={() => {
-    setDetailsOpen(false);
-    setSelectedOffice(null);
-  }}
-  type="office"
-  data={selectedOffice}
-  onUpdated={async () => {
-    await loadData();
-  }}
-/>
       </div>
+
+      {/* Details Modal */}
+      <DetailsModal
+        open={detailsOpen}
+        onClose={() => {
+          setDetailsOpen(false);
+          setSelectedOffice(null);
+        }}
+        type="office"
+        data={selectedOffice}
+        onUpdated={loadData}
+      />
     </div>
   );
 }

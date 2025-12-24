@@ -18,7 +18,7 @@ export default function NotificationCard({
       </div>
 
       <div className="flex-1">
-        <div className="text-sm font-semibold text-black">{title}</div>
+        <div className="text-sm font-semibold">{title}</div>
         <div className="text-sm text-gray-600">{description}</div>
         <div className="text-xs text-gray-400 mt-1">{time}</div>
       </div>

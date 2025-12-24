@@ -19,20 +19,12 @@ export default function Modal({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center">
-      {/* Overlay */}
-      <div
-        className="absolute inset-0 bg-black/40"
-        onClick={onClose}
-      />
+      <div className="absolute inset-0 bg-black/40" onClick={onClose} />
 
-      {/* Modal content */}
       <div className="relative bg-white rounded-lg shadow-lg w-full max-w-2xl p-6">
-        {/* Header */}
         <div className="flex justify-between items-center mb-4">
           {title && (
-            <h2 className="text-lg font-semibold text-black">
-              {title}
-            </h2>
+            <h2 className="text-lg font-semibold text-black">{title}</h2>
           )}
           <button
             onClick={onClose}
@@ -42,7 +34,6 @@ export default function Modal({
           </button>
         </div>
 
-        {/* Body */}
         <div>{children}</div>
       </div>
     </div>

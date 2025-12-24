@@ -1,4 +1,4 @@
-import type { Franchise, Office } from "@/api/api";
+import type { Franchise, Office } from "@/types";
 
 export type DetailsEntityType = "franchise" | "office";
 

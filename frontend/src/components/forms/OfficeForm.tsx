@@ -5,16 +5,8 @@ import { useForm } from "react-hook-form";
 
 import Button from "@/components/ui/Button";
 import Select from "@/components/ui/Select";
-import {
-  getFranchises,
-  createOffice,
-  updateOffice,
-} from "@/api/api";
-import type { Franchise } from "@/api/api";
-
-/* =========================
-   Types
-========================= */
+import { getFranchises, createOffice, updateOffice } from "@/api";
+import type { Franchise } from "@/types";
 
 type OfficeFormValues = {
   id?: number;
@@ -34,10 +26,6 @@ type OfficeFormProps = {
   onCancel?: () => void;
 };
 
-/* =========================
-   Component
-========================= */
-
 export default function OfficeForm({
   defaultValues,
   readOnly = false,
@@ -45,15 +33,13 @@ export default function OfficeForm({
   onCancel,
 }: OfficeFormProps) {
   const [franchises, setFranchises] = useState<Franchise[]>([]);
-  const [loading, setLoading] = useState(true);
 
   const {
     register,
     handleSubmit,
     setValue,
-    watch,
     reset,
-    formState: { errors },
+    formState: { errors, isSubmitting },
   } = useForm<OfficeFormValues>({
     defaultValues: {
       isActive: true,
@@ -61,7 +47,6 @@ export default function OfficeForm({
     },
   });
 
-  /* Reset form when defaultValues change (Details → Edit safety) */
   useEffect(() => {
     if (defaultValues) {
       reset({
@@ -71,22 +56,8 @@ export default function OfficeForm({
     }
   }, [defaultValues, reset]);
 
-  const selectedFranchise = watch("franchiseId");
-
-  /* Load franchises */
   useEffect(() => {
-    async function loadFranchises() {
-      try {
-        const data = await getFranchises();
-        setFranchises(data);
-      } catch (err) {
-        console.error("Failed to load franchises", err);
-      } finally {
-        setLoading(false);
-      }
-    }
-
-    loadFranchises();
+    getFranchises().then(setFranchises).catch(console.error);
   }, []);
 
   const franchiseOptions = franchises.map((f) => ({
@@ -94,136 +65,139 @@ export default function OfficeForm({
     value: f.id,
   }));
 
-  /* Submit (create only for now) */
+  const inputClass =
+    "w-full border border-gray-300 rounded-xl px-3 py-2 text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-200 disabled:bg-gray-100";
+
   const onSubmit = async (data: OfficeFormValues) => {
-  const payload = {
-    franchise_id: data.franchiseId,
-    name: data.name,
-    phone: data.phone,
-    email: data.email,
-    city: data.city,
-    consultants_count: data.consultants_count,
-    is_active: data.isActive,
+    const payload = {
+      franchise_id: data.franchiseId,
+      name: data.name,
+      phone: data.phone,
+      email: data.email,
+      city: data.city,
+      consultants_count: data.consultants_count,
+      is_active: data.isActive,
+    };
+
+    data.id
+      ? await updateOffice(data.id, payload)
+      : await createOffice(payload);
+
+    onSubmitSuccess?.();
   };
 
-  if (data.id) {
-    // ✅ EDIT MODE
-    await updateOffice(data.id, payload);
-  } else {
-    // ✅ CREATE MODE
-    await createOffice(payload);
-  }
-
-  onSubmitSuccess?.();
-};
-
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-      {/* Franchise */}
+    <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+      <div className="border-t border-gray-200" />
+
+      {/* Selector */}
       <div>
-        <label className="block text-sm font-medium mb-1">
+        <label className="block text-sm font-medium text-gray-600 mb-1">
           Franchise *
         </label>
-
         <Select
           disabled={readOnly}
-          value={selectedFranchise ?? ""}
-          placeholder="Choose franchise"
           options={franchiseOptions}
-          onChange={(value) =>
-            setValue("franchiseId", Number(value), {
+          placeholder="Select franchise"
+          onChange={(e) =>
+            setValue("franchiseId", Number(e.target.value), {
               shouldValidate: true,
             })
           }
         />
-
-        {errors.franchiseId && (
-          <p className="text-sm text-red-500">Required</p>
-        )}
+        <input type="hidden" {...register("franchiseId", { required: true })} />
       </div>
 
       {/* Office Name */}
       <div>
-        <label className="block text-sm font-medium mb-1">
+        <label className="block text-sm font-medium text-gray-600 mb-1">
           Office Name *
         </label>
         <input
           {...register("name", { required: true })}
           readOnly={readOnly}
-          className="w-full border rounded px-3 py-2 disabled:bg-gray-100"
+          placeholder=" Istanbul Head Office"
+          className={inputClass}
         />
       </div>
 
-      {/* Phone + Email */}
+      {/* Phone & Email */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <input
-          {...register("phone", { required: true })}
-          readOnly={readOnly}
-          placeholder="Phone"
-          className="border rounded px-3 py-2 disabled:bg-gray-100"
-        />
-        <input
-          type="email"
-          {...register("email", { required: true })}
-          readOnly={readOnly}
-          placeholder="Email"
-          className="border rounded px-3 py-2 disabled:bg-gray-100"
-        />
+        <div>
+          <label className="block text-sm font-medium text-gray-600 mb-1">
+            Phone *
+          </label>
+          <input
+            {...register("phone", { required: true })}
+            readOnly={readOnly}
+            placeholder="+90 555 123 45 67"
+            className={inputClass}
+          />
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium text-gray-600 mb-1">
+            Email *
+          </label>
+          <input
+            type="email"
+            {...register("email", { required: true })}
+            readOnly={readOnly}
+            placeholder="office@email.com"
+            className={inputClass}
+          />
+        </div>
       </div>
 
-      {/* Consultant Count */}
-      <input
-        type="number"
-        {...register("consultants_count", {
-          required: true,
-          valueAsNumber: true,
-        })}
-        readOnly={readOnly}
-        placeholder="Consultant Count"
-        className="border rounded px-3 py-2 w-full disabled:bg-gray-100"
-      />
+      {/* Consultants */}
+      <div>
+        <label className="block text-sm font-medium text-gray-600 mb-1">
+          Number of Consultants *
+        </label>
+        <input
+          type="number"
+          {...register("consultants_count", {
+            required: true,
+            valueAsNumber: true,
+          })}
+          readOnly={readOnly}
+          placeholder="12"
+          className={inputClass}
+        />
+      </div>
 
       {/* City */}
       <div>
-        <label className="block text-sm font-medium mb-1">
+        <label className="block text-sm font-medium text-gray-600 mb-1">
           City *
         </label>
         <input
           {...register("city", { required: true })}
           readOnly={readOnly}
-          className="w-full border rounded px-3 py-2 disabled:bg-gray-100"
+          placeholder="Istanbul"
+          className={inputClass}
         />
-        {errors.city && (
-          <p className="text-sm text-red-500">Required</p>
-        )}
       </div>
 
       {/* Status */}
-      <label className="flex items-center gap-2">
-        <input
-          type="checkbox"
-          {...register("isActive")}
-          disabled={readOnly}
-        />
+      <label className="flex items-center gap-2 text-sm text-gray-600">
+        <input type="checkbox" {...register("isActive")} disabled={readOnly} />
         Active Office
       </label>
 
       {/* Actions */}
       {!readOnly && (
-        <div className="flex justify-end gap-2 pt-4">
-          <Button type="submit" disabled={loading}>
+        <div className="flex justify-end gap-2 pt-4 ">
+          <Button
+            type="submit"
+            disabled={isSubmitting}
+            className="flex items-center gap-2"
+          >
+            <i className="fa-solid fa-floppy-disk text-sm"></i>
             Save
           </Button>
-
           {onCancel && (
-            <Button
-              type="button"
-              variant="secondary"
-              onClick={() => {
-                reset(defaultValues);
-                onCancel();
-              }}
-            >
+            <Button type="button" variant="secondary" onClick={onCancel}>
               Cancel
             </Button>
           )}

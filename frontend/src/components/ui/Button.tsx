@@ -10,8 +10,7 @@ export default function Button({
   className = "",
   ...props
 }: ButtonProps) {
-  const base =
-    "px-4 py-2 rounded-xl text-sm font-medium transition";
+  const base = "px-4 py-2 rounded-xl text-sm font-medium transition";
 
   const styles =
     variant === "primary"
@@ -19,10 +18,7 @@ export default function Button({
       : "bg-gray-200 text-gray-700 hover:bg-gray-300";
 
   return (
-    <button
-      {...props}
-      className={`${base} ${styles} ${className}`}
-    >
+    <button {...props} className={`${base} ${styles} ${className}`}>
       {children}
     </button>
   );

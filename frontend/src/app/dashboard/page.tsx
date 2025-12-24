@@ -6,11 +6,9 @@ import QuickActionCard from "@/components/dashborad/QuickActionCard";
 export default function DashboardPage() {
   return (
     <div className="space-y-6">
-      {/* Page title */}
-      <div className="flex justify-between items-center">
-        <h1 className="text-3xl font-semibold text-black">
-          Franchise Dashboard
-        </h1>
+      {/* title */}
+      <div>
+        <h1 className="text-3xl font-semibold">Franchise Dashboard</h1>
         <span className="text-sm text-gray-600">
           Welcome to the franchise management panel.
         </span>
@@ -50,25 +48,26 @@ export default function DashboardPage() {
       {/* Panels */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
         <DashboardPanel title="Recent Activities">
-  <NotificationCard
-    icon={<i className="fa-solid fa-building"></i>}
-    title="New office added"
-    description="Ataşehir office was added to the system"
-    time="2 days ago"
-  />
+          <NotificationCard
+            icon={<i className="fa-solid fa-building"></i>}
+            title="New office added"
+            description="Ataşehir office was added to the system"
+            time="2 days ago"
+          />
 
-  <NotificationCard
-    icon={<i className="fa-solid fa-money-bill"></i>}
-    title="Payment received"
-    description="₺5,000 payment received from Kadıköy office"
-    time="3 days ago"
-  />
-</DashboardPanel>
+          <NotificationCard
+            icon={<i className="fa-solid fa-money-bill"></i>}
+            title="Payment received"
+            description="₺5,000 payment received from Kadıköy office"
+            time="3 days ago"
+          />
+        </DashboardPanel>
 
         <DashboardPanel title="Quick Actions">
-          <QuickActionCard icon={<i className="fa-solid fa-building"></i>}
-    label="Office Management"
-    />
+          <QuickActionCard
+            icon={<i className="fa-solid fa-building"></i>}
+            label="Office Management"
+          />
         </DashboardPanel>
       </div>
     </div>

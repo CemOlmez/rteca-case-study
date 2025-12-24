@@ -4,14 +4,7 @@ import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 
 import Button from "@/components/ui/Button";
-import {
-  createFranchise,
-  updateFranchise,
-} from "@/api/api";
-
-/* =========================
-   Types
-========================= */
+import { createFranchise, updateFranchise } from "@/api";
 
 type FranchiseFormValues = {
   id?: number;
@@ -30,10 +23,6 @@ type FranchiseFormProps = {
   onCancel?: () => void;
 };
 
-/* =========================
-   Component
-========================= */
-
 export default function FranchiseForm({
   defaultValues,
   readOnly = false,
@@ -45,146 +34,120 @@ export default function FranchiseForm({
     handleSubmit,
     reset,
     formState: { errors },
-  } = useForm<FranchiseFormValues>({
-    defaultValues,
-  });
+  } = useForm<FranchiseFormValues>({ defaultValues });
 
-  /* Reset when switching franchise / cancel edit */
   useEffect(() => {
-    if (defaultValues) {
-      reset(defaultValues);
-    }
+    if (defaultValues) reset(defaultValues);
   }, [defaultValues, reset]);
 
-  /* Create or Update */
-  const onSubmit = async (data: FranchiseFormValues) => {
-    const payload = {
-      name: data.name,
-      tax_number: data.tax_number,
-      phone: data.phone,
-      email: data.email,
-      address: data.address,
-      about: data.about,
-    };
+  const inputClass =
+    "w-full border border-gray-300 rounded-xl px-3 py-2 text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-200 disabled:bg-gray-100";
 
-    if (data.id) {
-      // ✅ UPDATE
-      await updateFranchise(data.id, payload);
-    } else {
-      // ✅ CREATE
-      await createFranchise(payload);
-    }
+  const onSubmit = async (data: FranchiseFormValues) => {
+    const payload = { ...data };
+    delete payload.id;
+
+    data.id
+      ? await updateFranchise(data.id, payload)
+      : await createFranchise(payload);
 
     onSubmitSuccess?.();
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+    <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+      <div className="border-t border-gray-200" />
+
       {/* Franchise Name */}
       <div>
-        <label className="block text-sm font-medium mb-1">
+        <label className="block text-sm font-medium text-gray-600 mb-1">
           Franchise Name *
         </label>
         <input
           {...register("name", { required: true })}
           readOnly={readOnly}
-          className="w-full border rounded px-3 py-2 disabled:bg-gray-100"
+          placeholder="JokerSoft Istanbul"
+          className={inputClass}
         />
-        {errors.name && (
-          <p className="text-sm text-red-500">Required</p>
-        )}
       </div>
 
-      {/* Tax Number */}
+      {/* TAX Number */}
       <div>
-        <label className="block text-sm font-medium mb-1">
+        <label className="block text-sm font-medium text-gray-600 mb-1">
           Tax Number *
         </label>
         <input
           {...register("tax_number", { required: true })}
           readOnly={readOnly}
-          className="w-full border rounded px-3 py-2 disabled:bg-gray-100"
+          placeholder="1234567890"
+          className={inputClass}
         />
-        {errors.tax_number && (
-          <p className="text-sm text-red-500">Required</p>
-        )}
       </div>
 
-      {/* Phone + Email */}
+      {/* Phone and Email */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
-          <label className="block text-sm font-medium mb-1">
+          <label className="block text-sm font-medium text-gray-600 mb-1">
             Phone *
           </label>
           <input
             {...register("phone", { required: true })}
             readOnly={readOnly}
-            className="w-full border rounded px-3 py-2 disabled:bg-gray-100"
+            placeholder="+90 555 000 00 00"
+            className={inputClass}
           />
-          {errors.phone && (
-            <p className="text-sm text-red-500">Required</p>
-          )}
         </div>
 
         <div>
-          <label className="block text-sm font-medium mb-1">
+          <label className="block text-sm font-medium text-gray-600 mb-1">
             Email *
           </label>
           <input
             type="email"
             {...register("email", { required: true })}
             readOnly={readOnly}
-            className="w-full border rounded px-3 py-2 disabled:bg-gray-100"
+            placeholder="info@franchise.com"
+            className={inputClass}
           />
-          {errors.email && (
-            <p className="text-sm text-red-500">Required</p>
-          )}
         </div>
       </div>
 
-      {/* Address */}
+      {/* Adress */}
       <div>
-        <label className="block text-sm font-medium mb-1">
+        <label className="block text-sm font-medium text-gray-600 mb-1">
           Address *
         </label>
         <textarea
           {...register("address", { required: true })}
           readOnly={readOnly}
-          className="w-full border rounded px-3 py-2 disabled:bg-gray-100"
+          placeholder="Full company address"
           rows={3}
+          className={inputClass}
         />
-        {errors.address && (
-          <p className="text-sm text-red-500">Required</p>
-        )}
       </div>
 
       {/* About */}
       <div>
-        <label className="block text-sm font-medium mb-1">
+        <label className="block text-sm font-medium text-gray-600 mb-1">
           About Franchise
         </label>
         <textarea
           {...register("about")}
           readOnly={readOnly}
-          className="w-full border rounded px-3 py-2 disabled:bg-gray-100"
+          placeholder="Short description about the franchise"
           rows={3}
+          className={inputClass}
         />
       </div>
 
-      {/* Actions */}
       {!readOnly && (
-        <div className="flex justify-end gap-2 pt-4">
-          <Button type="submit">Save</Button>
-
+        <div className="flex justify-end gap-2 pt-4 border-t border-gray-200">
+          <Button type="submit">
+            {" "}
+            <i className="fa-solid fa-floppy-disk text-sm"></i> Save
+          </Button>
           {onCancel && (
-            <Button
-              type="button"
-              variant="secondary"
-              onClick={() => {
-                reset(defaultValues);
-                onCancel();
-              }}
-            >
+            <Button type="button" variant="secondary" onClick={onCancel}>
               Cancel
             </Button>
           )}

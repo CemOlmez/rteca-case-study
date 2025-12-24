@@ -4,7 +4,7 @@ type StatCardProps = {
   icon: ReactNode;
   value: string | number;
   label: string;
-  colorClass: string; // 👈 NEW
+  colorClass: string;
 };
 
 export default function StatCard({
@@ -22,7 +22,7 @@ export default function StatCard({
       </div>
 
       <div>
-        <div className="text-xl font-semibold text-black">{value}</div>
+        <div className="text-xl font-semibold">{value}</div>
         <div className="text-sm text-gray-600">{label}</div>
       </div>
     </div>
