@@ -107,15 +107,14 @@ From the project root:
 docker compose up --build
 ```
 
-> On first startup, the backend automatically seeds the database with mock data:
-
-- 3 Franchises
-- 2 Branches per Franchise
-
-The seed script runs only if the database is empty.  
-If data already exists, seeding is skipped automatically.
-
-To reset the database and re-run the seed:
+> **Note:** On first startup, the backend automatically seeds the database with mock data:
+>
+> - 3 Franchises
+> - 2 Branches per Franchise
+>
+> The seed script runs only if the database is empty.  
+> If data already exists, seeding is skipped automatically.
+> To reset the database and re-run the seed:
 
 ```bash
 docker compose down -v
