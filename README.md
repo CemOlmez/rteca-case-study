@@ -107,6 +107,21 @@ From the project root:
 docker compose up --build
 ```
 
+> On first startup, the backend automatically seeds the database with mock data:
+
+- 3 Franchises
+- 2 Branches per Franchise
+
+The seed script runs only if the database is empty.  
+If data already exists, seeding is skipped automatically.
+
+To reset the database and re-run the seed:
+
+```bash
+docker compose down -v
+docker compose up --build
+```
+
 ---
 
 ### 3. Access the Application
@@ -116,24 +131,6 @@ docker compose up --build
 | Frontend | http://localhost:3000            |
 | Backend  | http://localhost:8000            |
 | Health   | http://localhost:8000/api/health |
-
----
-
-## Environment Configuration
-
-All environment variables are managed via Docker Compose.
-
-### Frontend
-
-```
-NEXT_PUBLIC_API_URL=http://backend:8000/api
-```
-
-### Backend
-
-```
-DATABASE_URL=postgresql://rteca:rteca@db:5432/rteca_db
-```
 
 ---
 
@@ -194,5 +191,3 @@ Testing wasn't added
 **Cem Ölmez**  
 Frontend-focused Full-Stack Developer  
 React • TypeScript • Next.js • FastAPI
-
-## 📍 Istanbul, Turkey
