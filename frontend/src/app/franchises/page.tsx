@@ -71,10 +71,6 @@ export default function FranchisesPage() {
         <div className="text-sm text-gray-500">Loading franchises...</div>
       )}
 
-      {!loading && franchises.length === 0 && (
-        <div className="text-sm text-gray-500">No franchises found.</div>
-      )}
-
       {/* Table */}
       <div className="bg-white rounded-xl shadow p-4 space-y-4">
         <div className="flex justify-between items-center py-4">
@@ -112,7 +108,7 @@ export default function FranchisesPage() {
         />
       </div>
 
-      {/*Details Modal */}
+      {/* Details Modal */}
       <DetailsModal
         open={detailsOpen}
         onClose={() => {

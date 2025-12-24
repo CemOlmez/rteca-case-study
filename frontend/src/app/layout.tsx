@@ -3,7 +3,7 @@ import "./globals.css";
 import Sidebar from "@/components/Sidebar";
 
 export const metadata: Metadata = {
-  title: "Franchise Dashboard",
+  title: "Franchise Management System",
   description: "Franchise and office management system",
 };
 
