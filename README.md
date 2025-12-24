@@ -32,33 +32,30 @@ This project demonstrates:
 ## Project Structure
 
 ```
-rteca-case-study/
-├── backend/
-│   ├── app/
-│   │   ├── api/
-│   │   │   └── routes/
-│   │   │
-│   │   │
-│   │   │
-│   │   ├── models/
-│   │   ├── schemas/
-│   │   ├── database.py
-│   │   └── main.py
-│   └── Dockerfile
+rrteca-case-study/
+├── backend/                # FastAPI backend service
+│   ├── app/                # Application source code
+│   │   ├── api/            # API layer
+│   │   │   └── routes/     # Route definitions (franchises, branches, health)
+│   │   ├── models/         # SQLAlchemy database models
+│   │   ├── schemas/        # Pydantic schemas (request/response DTOs)
+│   │   └── main.py         # FastAPI app entry point
+│   └── Dockerfile          # Backend Docker configuration
 │
-├── frontend/
-│   ├── src/
-│   │   ├── app/
-│   │   ├── components/
-│   │   │   ├── ui/
-│   │   │   ├── forms/
-│   │   │   └── details/
-│   │   ├── api/
-│   │   └── styles/
-│   └── Dockerfile
+├── frontend/               # Next.js frontend application
+│   ├── src/                # Frontend source code
+│   │   ├── app/            # App Router pages (dashboard, franchises, offices)
+│   │   ├── components/     # Reusable UI components
+│   │   │   ├── ui/         # Base UI components (buttons, modals, tables)
+│   │   │   ├── forms/      # Create / Update forms
+│   │   │   └── details/    # Details & modal views
+│   │   ├── api/            # API client layer
+│   │   └── types/          # Shared TypeScript types
+│   └── Dockerfile          # Frontend Docker configuration
 │
-├── docker-compose.yml
-└── README.md
+├── docker-compose.yml      # Docker Compose setup (frontend, backend, database)
+└── README.md               # Project documentation
+
 ```
 
 ---
